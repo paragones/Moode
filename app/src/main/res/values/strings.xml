@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Moode</string>
+
+    <!-- Options Menu Strings-->
+    <string name="status_list_activity">Status List</string>
+    <string name="date_activity">Date Chart</string>
+    <string name="mood_chart_activity">Mood Chart</string>
+    <string name="help_activity">Help</string>
+    <string name="title_activity_date">DateActivity</string>
+
+    <!-- Title Strings-->
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_mood">MoodActivity</string>
+
+    <!-- Status Message-->
+    <string name="status_list_empty">You have no status message yet!</string>
+</resources>

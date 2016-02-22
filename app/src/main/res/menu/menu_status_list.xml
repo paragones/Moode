@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".StatusListActivity">
+    <item android:id="@+id/status_list_activity" android:title="@string/status_list_activity"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/date_activity" android:title="@string/date_activity"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/mood_chart_activity" android:title="@string/mood_chart_activity"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/help_activity" android:title="@string/help_activity"
+        android:orderInCategory="100" app:showAsAction="never" />
+</menu>
