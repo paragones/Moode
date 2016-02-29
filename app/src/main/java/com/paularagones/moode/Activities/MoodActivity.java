@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.paularagones.moode.Database.DBAdapter;
 import com.paularagones.moode.R;
 import com.paularagones.moode.Services.ActivityOptionsService;
 
@@ -14,6 +15,9 @@ public class MoodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood);
+
+        DBAdapter dbAdapter = new DBAdapter(this);
+        dbAdapter.executeFeelingsLocation();
     }
 
     @Override
