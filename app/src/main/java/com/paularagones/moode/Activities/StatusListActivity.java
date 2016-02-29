@@ -4,10 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
+import com.paularagones.moode.Adapters.RowStatusListAdapter;
 import com.paularagones.moode.Database.DBAdapter;
+import com.paularagones.moode.Models.Status;
 import com.paularagones.moode.R;
 import com.paularagones.moode.Services.ActivityOptionsService;
+
+import java.util.List;
 
 public class StatusListActivity extends AppCompatActivity {
 
@@ -15,9 +20,15 @@ public class StatusListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_list);
+        ListView statuslistViewer = (ListView) findViewById(R.id.status_list_view);
 
+
+        ///TODO DB shouldn't be called here create an async task for this
         DBAdapter dbAdapter = new DBAdapter(this);
-        dbAdapter.executeStatus();
+        List<Status> statusList = dbAdapter.executeStatus();
+
+        RowStatusListAdapter statusListAdapter = new RowStatusListAdapter(this, statusList);
+        statuslistViewer.setAdapter(statusListAdapter);
     }
 
     @Override

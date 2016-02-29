@@ -5,7 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.paularagones.moode.Models.Status;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Paul.Aragones on 2/24/2016.
@@ -21,21 +25,28 @@ public class DBAdapter extends SQLiteAssetHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void executeStatus() {
+    public List<Status> executeStatus() {
+        List<Status> statusList = new ArrayList<>();
+
         database = getWritableDatabase();
-
-
-        Cursor cursor = database.rawQuery("SELECT * FROM [Status] s,[Feelings] f,[Location] l WHERE s.FeelingsID = f.FeelingsID AND s.LocationID = l.LocationID",null);
+        Cursor cursor = database.rawQuery("SELECT s.StatusID, p.PersonName, f.FeelingsDescription, l.LocationDescription FROM [Status] s,[Feelings] f,[Location] l, [Person] p WHERE s.FeelingsID = f.FeelingsID AND s.LocationID = l.LocationID AND s.PersonID = p.PersonID", null);
         while (cursor.moveToNext()) {
-            Log.e(LOG_TAG, "Status ID : " + cursor.getInt(cursor.getColumnIndex("StatusID")));
-            Log.e(LOG_TAG, "FeelingsID : " + cursor.getInt(cursor.getColumnIndex("FeelingsID")));
-            Log.e(LOG_TAG, "LocationID : " + cursor.getInt(cursor.getColumnIndex("LocationID")));
-            Log.e(LOG_TAG, "PersonID : " + cursor.getInt(cursor.getColumnIndex("PersonID")));
+            Status status = new Status();
+            status.setStatusID(cursor.getInt(cursor.getColumnIndex("StatusID")));
+            status.setFeelings(cursor.getString(cursor.getColumnIndex("FeelingsDescription")));
+            status.setLocation(cursor.getString(cursor.getColumnIndex("LocationID")));
+            status.setPerson(cursor.getString(cursor.getColumnIndex("PersonID")));
+            statusList.add(status);
+            Log.e(LOG_TAG, status.toString());
         }
+
+
 
         cursor.close();
 
         close();
+
+        return statusList;
     }
 
     public void executeFeelingsLocation() {

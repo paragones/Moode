@@ -5,49 +5,70 @@ package com.paularagones.moode.Models;
  */
 public class Status {
 
-    private String DateStamp;
-    private int FeelingsID;
-    private int StatusID;
-    private int PersonID;
-    private int LocationID;
+    private int statusID;
+    private String dateStamp;
+    private String feelings;
+    private String person;
+    private String location;
+    private String notes;
 
-    public String getDateStamp() {
-        return DateStamp;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setDateStamp(String dateStamp) {
-        DateStamp = dateStamp;
-    }
-
-    public int getFeelingsID() {
-        return FeelingsID;
-    }
-
-    public void setFeelingsID(int feelingsID) {
-        FeelingsID = feelingsID;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public int getStatusID() {
-        return StatusID;
+        return statusID;
     }
 
     public void setStatusID(int statusID) {
-        StatusID = statusID;
+        this.statusID = statusID;
     }
 
-    public int getPersonID() {
-        return PersonID;
+    public String getDateStamp() {
+        return dateStamp;
     }
 
-    public void setPersonID(int personID) {
-        PersonID = personID;
+    public void setDateStamp(String dateStamp) {
+        this.dateStamp = dateStamp;
     }
 
-    public int getLocationID() {
-        return LocationID;
+    public String getFeelings() {
+        return feelings;
     }
 
-    public void setLocationID(int locationID) {
-        LocationID = locationID;
+    public void setFeelings(String feelings) {
+        this.feelings = feelings;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "statusID=" + statusID +
+                ", dateStamp='" + dateStamp + '\'' +
+                ", feelings='" + feelings + '\'' +
+                ", person='" + person + '\'' +
+                ", location='" + location + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }
