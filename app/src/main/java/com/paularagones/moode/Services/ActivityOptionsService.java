@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 
+import com.paularagones.moode.Activities.AddNewStatusActivity;
 import com.paularagones.moode.Activities.DateActivity;
 import com.paularagones.moode.Activities.MoodActivity;
 import com.paularagones.moode.Activities.StatusListActivity;
@@ -24,6 +25,11 @@ public class ActivityOptionsService {
             case R.id.status_list_activity :
 //                if (this != StatusListActivity.class) compare current activity to target activity
                 mainIntent = new Intent(activity, StatusListActivity.class);
+                activity.startActivity(mainIntent);
+                break;
+            case R.id.add_new_status_list_activity :
+//                if (this != StatusListActivity.class) compare current activity to target activity
+                mainIntent = new Intent(activity, AddNewStatusActivity.class);
                 activity.startActivity(mainIntent);
                 break;
             case R.id.date_activity :

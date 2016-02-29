@@ -29,36 +29,36 @@
     <TextView android:text="By Location"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="5" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="15"
         android:id="@+id/locationListView"        />
 
 
     <TextView android:text="By Person"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="5" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="15"
         android:id="@+id/personListView"
         />
 
     <TextView android:text="Suggested Advices"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="5" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="15"
         android:id="@+id/suggestedAdviceListView"
         />
 

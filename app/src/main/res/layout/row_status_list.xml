@@ -18,6 +18,12 @@
         android:layout_height="wrap_content"
          />
 
+    <TextView android:text="Activity"
+        android:id="@+id/tv_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
     <TextView android:text="Person"
         android:id="@+id/tv_person"
         android:layout_width="wrap_content"

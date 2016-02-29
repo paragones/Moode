@@ -6,7 +6,8 @@
     <string name="date_activity">Date Chart</string>
     <string name="mood_chart_activity">Mood Chart</string>
     <string name="help_activity">Help</string>
-    <string name="title_activity_date">DateActivity</string>
+    <string name="title_activity_date">Date Activity</string>
+    <string name="add_new_status_activity">Add New Status</string>
 
     <!-- Title Strings-->
     <string name="hello_world">Hello world!</string>
@@ -15,4 +16,5 @@
 
     <!-- Status Message-->
     <string name="status_list_empty">You have no status message yet!</string>
+
 </resources>

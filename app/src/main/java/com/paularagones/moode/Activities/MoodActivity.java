@@ -4,20 +4,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
+import com.paularagones.moode.Adapters.RowResultsWithBarAdapter;
 import com.paularagones.moode.Database.DBAdapter;
+import com.paularagones.moode.Models.Result;
 import com.paularagones.moode.R;
 import com.paularagones.moode.Services.ActivityOptionsService;
 
+import java.util.List;
+
 public class MoodActivity extends AppCompatActivity {
+
+    private ListView dateListView;
+    private ListView locationListView;
+    private ListView personListView;
+    private ListView suggestedAdviceListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood);
 
+        dateListView = (ListView) findViewById(R.id.dateListView);
+        locationListView = (ListView) findViewById(R.id.locationListView);
+        personListView = (ListView) findViewById(R.id.personListView);
+        suggestedAdviceListView = (ListView) findViewById(R.id.suggestedAdviceListView);
+
+
+        ///TODO DB shouldn't be called here create an async task for this
         DBAdapter dbAdapter = new DBAdapter(this);
-        dbAdapter.executeFeelingsLocation();
+        List<Result> locationResults = dbAdapter.getFeelingsResultByLocation();
+        List<Result> personResults = dbAdapter.getFeelingsResultByPerson();
+
+        RowResultsWithBarAdapter locationResultsAdapter = new RowResultsWithBarAdapter(this, locationResults);
+        RowResultsWithBarAdapter personResultsAdapter = new RowResultsWithBarAdapter(this, personResults);
+
+        locationListView.setAdapter(locationResultsAdapter);
+        personListView.setAdapter(personResultsAdapter);
+
     }
 
     @Override

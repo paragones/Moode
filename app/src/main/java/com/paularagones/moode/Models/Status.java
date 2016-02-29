@@ -11,6 +11,15 @@ public class Status {
     private String person;
     private String location;
     private String notes;
+    private String activity;
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
 
     public String getNotes() {
         return notes;
