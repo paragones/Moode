@@ -28,6 +28,21 @@
             android:name=".Activities.MoodActivity"
             android:label="@string/title_activity_mood" >
         </activity>
+        <activity
+            android:name=".Activities.AddNewStatusActivity">
+        </activity>
+        <activity
+            android:name=".Activities.AddNewPersonActivity">
+        </activity>
+        <activity
+            android:name=".Activities.AddNewFeelingsActivity">
+        </activity>
+        <activity
+            android:name=".Activities.AddNewLocationActivity">
+        </activity>
+        <activity
+            android:name=".Activities.AddNewActivity">
+        </activity>
     </application>
 
 </manifest>

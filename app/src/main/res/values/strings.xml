@@ -17,4 +17,10 @@
     <!-- Status Message-->
     <string name="status_list_empty">You have no status message yet!</string>
 
+
+    <!-- Spinner objects-->
+    <string-array name="spinner_array">
+        <item></item>
+    </string-array>
+
 </resources>
