@@ -12,7 +12,7 @@ import com.paularagones.moode.Database.DBAdapter;
 import com.paularagones.moode.R;
 import com.paularagones.moode.Services.ActivityOptionsService;
 
-public abstract class AddNewAbstract extends AppCompatActivity implements View.OnClickListener {
+public abstract class AddNewRecordActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     protected String columnName;
@@ -53,7 +53,7 @@ public abstract class AddNewAbstract extends AppCompatActivity implements View.O
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_add_new:
-                DBAdapter dbAdapter = new DBAdapter(this);
+                DBAdapter dbAdapter = DBAdapter.newInstance(this);
 
                 dbAdapter.addNewRecord(getTableName(), getColumnName(), etNewRecord.getText().toString());
                 break;

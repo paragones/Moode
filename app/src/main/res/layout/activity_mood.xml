@@ -9,10 +9,45 @@
     android:orientation="vertical"
     tools:context="com.paularagones.moode.Activities.moode.com.Activities.MoodActivity">
 
-    <TextView android:text="Happiness Mood"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="5" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="5">
+
+        <TextView android:text="Select Results "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+         />
+
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="5">
+
+        <TextView android:text="Select Results "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_result"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
 
     <TextView android:text="By Date"
         android:layout_width="wrap_content"

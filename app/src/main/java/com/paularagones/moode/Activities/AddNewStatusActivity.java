@@ -1,17 +1,13 @@
 package com.paularagones.moode.Activities;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.Button;
@@ -49,7 +45,7 @@ public class AddNewStatusActivity extends AppCompatActivity implements OnClickLi
         status = new Status();
 
         ///ToDO create async task, to change once the new spinner design has changed as well
-        DBAdapter dbAdapter = new DBAdapter(this);
+        DBAdapter dbAdapter = DBAdapter.newInstance(this);
         feelingsList =  dbAdapter.getFeelingsList();
         personList =  dbAdapter.getPersonList();
         activityList =  dbAdapter.getActivityList();
@@ -85,7 +81,7 @@ public class AddNewStatusActivity extends AppCompatActivity implements OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.submit_button:
-                DBAdapter dbAdapter = new DBAdapter(this);
+                DBAdapter dbAdapter = DBAdapter.newInstance(this);
                 status.setNotes(etReason.getText().toString());
                 dbAdapter.addNewStatus(status);
                 break;

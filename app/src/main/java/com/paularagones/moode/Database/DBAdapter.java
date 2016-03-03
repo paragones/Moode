@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.Editable;
 import android.util.Log;
 
 import com.paularagones.moode.Constants.Constants;
-import com.paularagones.moode.Models.Result;
+import com.paularagones.moode.Models.DbRequest;
 import com.paularagones.moode.Models.Result;
 import com.paularagones.moode.Models.SpinnerResult;
 import com.paularagones.moode.Models.Status;
@@ -17,7 +16,6 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,11 +25,23 @@ public class DBAdapter extends SQLiteAssetHelper {
 
     private static final String LOG_TAG = DBAdapter.class.getSimpleName();
     private SQLiteDatabase database;
-    private static final String DATABASE_NAME = "Mooder.db";
-    private static final int DATABASE_VERSION = 1;
 
-    public DBAdapter(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    private static DBAdapter instance;
+
+
+    private DBAdapter(Context context) {
+        super(context, Constants.Database.DATABASE_NAME, null, Constants.Database.DATABASE_VERSION);
+    }
+
+    public static DBAdapter newInstance(Context context) {
+
+        if (instance == null) {
+            return new DBAdapter(context);
+        } else {
+            return instance;
+
+        }
+
     }
 
     public List<Status> getStatusList() {
@@ -89,49 +99,47 @@ public class DBAdapter extends SQLiteAssetHelper {
         return results;
     }
 
-    public List<Result> getLocationResultByDate() {
-        String tableName = String.format(
-                "%s AS %s, %s AS %s",
-                Constants.Database.TABLE_NAME_STATUS,
-                Constants.Database.ALIAS_ONE,
-                Constants.Database.TABLE_NAME_LOCATION,
-                Constants.Database.ALIAS_TWO);
-
-        String countColumn = String.format(
-                "COUNT (%S) AS %s",
-                Constants.Database.COLUMN_NAME_LOCATION_DESCRIPTION,
-                Constants.Database.COLUMN_NAME_NUMBER_OF_TIMES
-                );
-
-        String[] columnNames = {
-                Constants.Database.COLUMN_NAME_LOCATION_DESCRIPTION,
-                countColumn};
+    public List<Result> getDateResult(DbRequest dbRequest) {
 
         String selection = String.format(
                 "%s.%s = %s.%s AND date('now','start of month') <= %s.%s",
                 Constants.Database.ALIAS_ONE,
-                Constants.Database.COLUMN_NAME_LOCATION_ID,
+                dbRequest.getTableID(),
                 Constants.Database.ALIAS_TWO,
-                Constants.Database.COLUMN_NAME_LOCATION_ID,
+                dbRequest.getTableID(),
                 Constants.Database.ALIAS_ONE,
                 Constants.Database.COLUMN_NAME_DATE_STAMP
-                );
+        );
 
-        return queryDateChart(tableName, columnNames, selection, Constants.Database.COLUMN_NAME_LOCATION_DESCRIPTION);
+        return prepareTablesAndColumnNames(selection, dbRequest);
     }
 
-    public List<Result> queryDateChart(String tableName, String[] columnName, String selection, String selectedGroupByColumn) {
-        database = getWritableDatabase();
+    public List<Result> prepareTablesAndColumnNames(String selection, DbRequest dbRequest) {
+        String tableName = String.format(
+                "%s AS %s, %s AS %s",
+                Constants.Database.TABLE_NAME_STATUS,
+                Constants.Database.ALIAS_ONE,
+                dbRequest.getTableName(),
+                Constants.Database.ALIAS_TWO);
+
+        String countColumn = String.format(
+                "COUNT (%S) AS %s",
+                dbRequest.getColumnName(),
+                Constants.Database.COLUMN_NAME_NUMBER_OF_TIMES
+                );
+
+        String[] columnNames = {
+                dbRequest.getColumnName(),
+                countColumn};
+        return queryDateChart(tableName, columnNames, selection, dbRequest.getColumnName());
+    }
+
+    public List<Result> queryDateChart(String tableNames, String[] columnName, String selection, String selectedGroupByColumn) {
+        database = getReadableDatabase();
 
         List<Result> results = new ArrayList<>();
 
-        Cursor cursor = database.query(tableName, columnName, selection, null, selectedGroupByColumn, null, null);
-
-//        Cursor cursor = database.rawQuery("SELECT " +
-//                "f.FeelingsDescription, COUNT (FeelingsDescription) as NumberOfTimes" +
-//                "FROM [Status] s,[Feelings] f" +
-//                "WHERE s.FeelingsID = f.FeelingsID AND date('now','start of month') <= DateStamp" +
-//                "GROUP BY f.FeelingsDescription;",null);
+        Cursor cursor = database.query(tableNames, columnName, selection, null, selectedGroupByColumn, null, selectedGroupByColumn);
 
         while (cursor.moveToNext()) {
             Result result = new Result();
@@ -139,7 +147,6 @@ public class DBAdapter extends SQLiteAssetHelper {
             result.setNumberOfTimes(cursor.getInt(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_NUMBER_OF_TIMES)));
             results.add(result);
 
-//            Log.e(LOG_TAG, result.toString());
         }
 
         cursor.close();
