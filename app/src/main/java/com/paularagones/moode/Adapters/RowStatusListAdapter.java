@@ -60,6 +60,7 @@ public class RowStatusListAdapter extends BaseAdapter {
         holder.tvActivity.setText(status.getActivity());
         holder.tvLocation.setText(status.getLocation());
         holder.tvReason.setText(status.getNotes());
+
     }
 
     protected class ViewHolder {

@@ -35,10 +35,10 @@ public class DateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_date);
 
         TextView tvDateTitle = (TextView) findViewById(R.id.title_date_chart);
-        feelingsListView = (ListView) findViewById(R.id.feelingsListView);
-        locationListView = (ListView) findViewById(R.id.locationListView);
-        personListView = (ListView) findViewById(R.id.personListView);
-        activityListView = (ListView) findViewById(R.id.activityListView);
+        feelingsListView = (ListView) findViewById(R.id.feelings_list_view);
+        locationListView = (ListView) findViewById(R.id.location_list_view);
+        personListView = (ListView) findViewById(R.id.person_list_view);
+        activityListView = (ListView) findViewById(R.id.activity_list_view);
 
         YearMonth month = new YearMonth();
 

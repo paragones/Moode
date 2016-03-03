@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:id="@+id/feelingsListView"
+        android:id="@+id/feelings_list_view"
         />
 
     <TextView android:text="By Location"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="15"
-        android:id="@+id/locationListView"        />
+        android:id="@+id/location_list_view"        />
 
 
     <TextView android:text="By Person"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="15"
-        android:id="@+id/personListView"
+        android:id="@+id/person_list_view"
         />
 
     <TextView android:text="By Activity"
@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="15"
-        android:id="@+id/activityListView"
+        android:id="@+id/activity_list_view"
         />
 
 

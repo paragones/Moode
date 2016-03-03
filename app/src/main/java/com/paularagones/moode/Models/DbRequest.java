@@ -32,4 +32,13 @@ public abstract class DbRequest {
     public void setTableID(String tableID) {
         this.tableID = tableID;
     }
+
+    @Override
+    public String toString() {
+        return "DbRequest{" +
+                "tableName='" + tableName + '\'' +
+                ", columnName='" + columnName + '\'' +
+                ", tableID='" + tableID + '\'' +
+                '}';
+    }
 }

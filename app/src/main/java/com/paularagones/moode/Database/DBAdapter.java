@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.paularagones.moode.Constants.Constants;
@@ -114,27 +115,58 @@ public class DBAdapter extends SQLiteAssetHelper {
         return prepareTablesAndColumnNames(selection, dbRequest);
     }
 
-    public List<Result> prepareTablesAndColumnNames(String selection, DbRequest dbRequest) {
-        String tableName = String.format(
-                "%s AS %s, %s AS %s",
-                Constants.Database.TABLE_NAME_STATUS,
+    public List<Result> getResultList(String resultTableID, int ID, DbRequest dbRequest) {
+
+        String selection = String.format(
+                "%s.%s = %s.%s AND %s.%s = %s",
                 Constants.Database.ALIAS_ONE,
-                dbRequest.getTableName(),
-                Constants.Database.ALIAS_TWO);
+                dbRequest.getTableID(),
+                Constants.Database.ALIAS_TWO,
+                dbRequest.getTableID(),
+                Constants.Database.ALIAS_ONE,
+                resultTableID,
+                ID
+        );
 
-        String countColumn = String.format(
-                "COUNT (%S) AS %s",
-                dbRequest.getColumnName(),
-                Constants.Database.COLUMN_NAME_NUMBER_OF_TIMES
-                );
-
-        String[] columnNames = {
-                dbRequest.getColumnName(),
-                countColumn};
-        return queryDateChart(tableName, columnNames, selection, dbRequest.getColumnName());
+        return prepareTablesAndColumnNames(selection, dbRequest);
     }
 
-    public List<Result> queryDateChart(String tableNames, String[] columnName, String selection, String selectedGroupByColumn) {
+
+    public List<Result> prepareTablesAndColumnNames(String selection, DbRequest dbRequest) {
+        String tableName = prepareTableName(dbRequest);
+
+        String countColumn = prepareCountColumn(dbRequest);
+
+        String[] columnNames = prepareColumnNames(dbRequest, countColumn);
+
+        return queryResult(tableName, columnNames, selection, dbRequest.getColumnName());
+    }
+
+    @NonNull
+    private String[] prepareColumnNames(DbRequest dbRequest, String countColumn) {
+        return new String[]{
+                    dbRequest.getColumnName(),
+                    countColumn};
+    }
+
+    private String prepareCountColumn(DbRequest dbRequest) {
+        return String.format(
+                    "COUNT (%S) AS %s",
+                    dbRequest.getColumnName(),
+                    Constants.Database.COLUMN_NAME_NUMBER_OF_TIMES
+                    );
+    }
+
+    private String prepareTableName(DbRequest dbRequest) {
+        return String.format(
+                    "%s AS %s, %s AS %s",
+                    Constants.Database.TABLE_NAME_STATUS,
+                    Constants.Database.ALIAS_ONE,
+                    dbRequest.getTableName(),
+                    Constants.Database.ALIAS_TWO);
+    }
+
+    public List<Result> queryResult(String tableNames, String[] columnName, String selection, String selectedGroupByColumn) {
         database = getReadableDatabase();
 
         List<Result> results = new ArrayList<>();
@@ -156,60 +188,24 @@ public class DBAdapter extends SQLiteAssetHelper {
         return results;
     }
 
-    public List<Result> getFeelingsResultByPerson() {
+
+    public List<SpinnerResult> getListResult(DbRequest dbRequest) {
         database = getWritableDatabase();
 
-        List<Result> results = new ArrayList<>();
+        List<SpinnerResult> results = new ArrayList<>();
 
-        Cursor cursor = database.rawQuery("Select LocationDescription, COUNT (LocationDescription) as NumberOfTimes " +
-                "FROM " +
-                "    [Status] s, [Feelings] f, [Location] l " +
-                "WHERE " +
-                "     s.FeelingsID = f.FeelingsID AND " +
-                "     s.LocationID = l.LocationID AND" +
-                "     f.FeelingsID = 1 " +
-                "GROUP BY " +
-                "    LocationDescription ",null);
+        String[] columnNames = {
+                dbRequest.getTableID(),
+                dbRequest.getColumnName(),
+                };
+
+        Cursor cursor = database.query(dbRequest.getTableName(), columnNames, null, null, null, null, dbRequest.getTableID());
 
         while (cursor.moveToNext()) {
-            Result result = new Result();
-            result.setDescription(cursor.getString(cursor.getColumnIndex("LocationDescription")));
-            result.setNumberOfTimes(cursor.getInt(cursor.getColumnIndex("NumberOfTimes")));
+            SpinnerResult result = new SpinnerResult();
+            result.setID(cursor.getInt(cursor.getColumnIndex(dbRequest.getTableID())));
+            result.setDescription(cursor.getString(cursor.getColumnIndex(dbRequest.getColumnName())));
             results.add(result);
-
-//            Log.e(LOG_TAG, result.toString());
-        }
-
-        cursor.close();
-
-        close();
-
-        return results;
-    }
-
-    public List<Result> getFeelingsResultByLocation() {
-        database = getWritableDatabase();
-
-        List<Result> results = new ArrayList<>();
-
-        Cursor cursor = database.rawQuery("Select PersonName, COUNT (PersonName) as NumberOfTimes " +
-                "FROM " +
-                "    [Status] s, [Feelings] f, [Person] p " +
-                "WHERE " +
-                "     s.FeelingsID = f.FeelingsID AND " +
-                "     s.LocationID = p.PersonID AND" +
-                "     f.FeelingsID = 1 " +
-                "GROUP BY " +
-                "    PersonName ",null);
-
-        while (cursor.moveToNext()) {
-            Result result = new Result();
-            result.setDescription(cursor.getString(cursor.getColumnIndex("PersonName")));
-            result.setNumberOfTimes(cursor.getInt(cursor.getColumnIndex("NumberOfTimes")));
-            results.add(result);
-
-//            Log.e(LOG_TAG, result.toString());
-
         }
 
         cursor.close();
