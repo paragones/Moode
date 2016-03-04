@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Moode</string>
+    <string name="app_name">Mooder</string>
 
     <!-- Options Menu Strings-->
     <string name="status_list_activity">Status List</string>
