@@ -49,7 +49,7 @@ public class DBAdapter extends SQLiteAssetHelper {
         List<Status> statusList = new ArrayList<>();
 
         database = getWritableDatabase();
-        Cursor cursor = database.rawQuery("SELECT s.StatusID, s.DateStamp, p.PersonName, f.FeelingsDescription, l.LocationDescription, a.ActivityDescription, s.Notes FROM [Status] s,[Feelings] f,[Location] l, [Person] p, [Activity] a WHERE s.FeelingsID = f.FeelingsID AND s.LocationID = l.LocationID AND s.PersonID = p.PersonID AND s.ActivityID = a.ActivityID ORDER BY s.StatusID Desc", null);
+        Cursor cursor = database.rawQuery("SELECT s.StatusID, s.FeelingsID, s.PersonID, s.LocationID, s.ActivityID, s.DateStamp, p.PersonName, f.FeelingsDescription, l.LocationDescription, a.ActivityDescription, s.Notes FROM [Status] s,[Feelings] f,[Location] l, [Person] p, [Activity] a WHERE s.FeelingsID = f.FeelingsID AND s.LocationID = l.LocationID AND s.PersonID = p.PersonID AND s.ActivityID = a.ActivityID ORDER BY s.StatusID Desc", null);
         while (cursor.moveToNext()) {
             Status status = new Status();
             status.setStatusID(cursor.getInt(cursor.getColumnIndex("StatusID")));
@@ -59,6 +59,10 @@ public class DBAdapter extends SQLiteAssetHelper {
             status.setPerson(cursor.getString(cursor.getColumnIndex("PersonName")));
             status.setActivity(cursor.getString(cursor.getColumnIndex("ActivityDescription")));
             status.setNotes(cursor.getString(cursor.getColumnIndex("Notes")));
+            status.setFeelingsID(cursor.getInt(cursor.getColumnIndex("FeelingsID")));
+            status.setActivityID(cursor.getInt(cursor.getColumnIndex("ActivityID")));
+            status.setPersonID(cursor.getInt(cursor.getColumnIndex("PersonID")));
+            status.setLocationID(cursor.getInt(cursor.getColumnIndex("LocationID")));
 
             statusList.add(status);
 //            Log.e(LOG_TAG, status.toString());
@@ -221,7 +225,7 @@ public class DBAdapter extends SQLiteAssetHelper {
 
         List<SpinnerResult> results = new ArrayList<>();
 
-        Cursor cursor = database.rawQuery("select FeelingsID, FeelingsDescription from Feelings ORDER BY FeelingsID",null);
+        Cursor cursor = database.rawQuery("select FeelingsID, FeelingsDescription from Feelings ORDER BY FeelingsID", null);
 
         while (cursor.moveToNext()) {
             SpinnerResult result = new SpinnerResult();
@@ -311,10 +315,6 @@ public class DBAdapter extends SQLiteAssetHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName,text);
 
-//        Log.e(LOG_TAG, "tablename : " + tableName);
-//        Log.e(LOG_TAG, "columnName : " + columnName);
-//        Log.e(LOG_TAG, "text: " + text);
-
         database = getWritableDatabase();
         database.beginTransaction();
 
@@ -331,7 +331,6 @@ public class DBAdapter extends SQLiteAssetHelper {
         close();
 
     }
-
 
     public void addNewStatus(Status status) {
         DateTime dateTime = new DateTime();
@@ -352,6 +351,55 @@ public class DBAdapter extends SQLiteAssetHelper {
             database.insert(Constants.Database.TABLE_NAME_STATUS, null, contentValues);
             database.setTransactionSuccessful();
             Log.e(LOG_TAG, "insertion successful");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            database.endTransaction();
+        }
+
+        close();
+    }
+
+    public void deleteStatus(Status status) {
+        String whereClause = String.format("%s = %s", Constants.Database.COLUMN_NAME_STATUS_ID, status.getStatusID());
+
+        database = getWritableDatabase();
+        database.beginTransaction();
+
+        try {
+            database.delete(Constants.Database.TABLE_NAME_STATUS, whereClause, null);
+            database.setTransactionSuccessful();
+            Log.e(LOG_TAG, "deletion successful");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            database.endTransaction();
+        }
+
+        close();
+    }
+
+    public void updateStatus(Status status) {
+        DateTime dateTime = new DateTime();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Constants.Database.COLUMN_NAME_FEELINGS_ID,status.getFeelingsID());
+        contentValues.put(Constants.Database.COLUMN_NAME_LOCATION_ID,status.getLocationID());
+        contentValues.put(Constants.Database.COLUMN_NAME_ACTIVITY_ID, status.getActivityID());
+        contentValues.put(Constants.Database.COLUMN_NAME_PERSON_ID, status.getPersonID());
+        contentValues.put(Constants.Database.COLUMN_NAME_DATE_STAMP, dateTime.toString(Constants.Date.DATE_FORMAT));
+        contentValues.put(Constants.Database.COLUMN_NAME_NOTES, status.getNotes());
+
+        String whereClause = String.format("%s = %s", Constants.Database.COLUMN_NAME_STATUS_ID, status.getStatusID());
+
+        Log.e(LOG_TAG, "update " + status.toString());
+
+        database = getWritableDatabase();
+        database.beginTransaction();
+
+        try {
+            database.update(Constants.Database.TABLE_NAME_STATUS, contentValues, whereClause, null);
+            database.setTransactionSuccessful();
+            Log.e(LOG_TAG, "update successful");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -2,6 +2,7 @@ package com.paularagones.moode.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,10 +15,18 @@ import android.widget.Button;
 
 import com.paularagones.moode.Adapters.RowSpinnerStyleAdapter;
 import com.paularagones.moode.Database.DBAdapter;
+import com.paularagones.moode.Models.DbRequestActivity;
+import com.paularagones.moode.Models.DbRequestFeelings;
+import com.paularagones.moode.Models.DbRequestLocation;
+import com.paularagones.moode.Models.DbRequestPerson;
 import com.paularagones.moode.Models.SpinnerResult;
 import com.paularagones.moode.Models.Status;
 import com.paularagones.moode.R;
 import com.paularagones.moode.Services.ActivityOptionsService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -32,29 +41,44 @@ public class AddNewStatusActivity extends AppCompatActivity implements OnClickLi
     private Status status;
     private EditText etReason;
 
+    private EventBus eventBus;
+    private boolean isStatusForEdit;
+
     List<SpinnerResult> feelingsList;
     List<SpinnerResult> personList;
     List<SpinnerResult> activityList;
     List<SpinnerResult> locationList;
 
+    RowSpinnerStyleAdapter feelingsAdapter;
+    RowSpinnerStyleAdapter personAdapter;
+    RowSpinnerStyleAdapter activityAdapter;
+    RowSpinnerStyleAdapter locationAdaper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(LOG_TAG, "onCreate");
         setContentView(R.layout.activity_add_new_status);
+        eventBus = EventBus.getDefault();
+
 
         status = new Status();
 
         ///ToDO create async task, to change once the new spinner design has changed as well
         DBAdapter dbAdapter = DBAdapter.newInstance(this);
-        feelingsList =  dbAdapter.getFeelingsList();
-        personList =  dbAdapter.getPersonList();
-        activityList =  dbAdapter.getActivityList();
-        locationList =  dbAdapter.getLocationList();
+//        feelingsList =  dbAdapter.getFeelingsList();
+//        personList =  dbAdapter.getPersonList();
+//        activityList =  dbAdapter.getActivityList();
+//        locationList =  dbAdapter.getLocationList();
+        feelingsList =  dbAdapter.getListResult(new DbRequestFeelings());
+        personList =  dbAdapter.getListResult(new DbRequestPerson());
+        activityList =  dbAdapter.getListResult(new DbRequestActivity());
+        locationList =  dbAdapter.getListResult(new DbRequestLocation());
 
-        RowSpinnerStyleAdapter feelingsAdapter = new RowSpinnerStyleAdapter(this, feelingsList);
-        RowSpinnerStyleAdapter personAdapter = new RowSpinnerStyleAdapter(this, personList);
-        RowSpinnerStyleAdapter activityAdapter = new RowSpinnerStyleAdapter(this, activityList);
-        RowSpinnerStyleAdapter locationAdaper = new RowSpinnerStyleAdapter(this, locationList);
+        feelingsAdapter = new RowSpinnerStyleAdapter(this, feelingsList);
+        personAdapter = new RowSpinnerStyleAdapter(this, personList);
+        activityAdapter = new RowSpinnerStyleAdapter(this, activityList);
+        locationAdaper = new RowSpinnerStyleAdapter(this, locationList);
 
         spinnerFeelings = (Spinner) findViewById(R.id.spinner_feelings);
         spinnerActivity = (Spinner) findViewById(R.id.spinner_activity);
@@ -73,8 +97,43 @@ public class AddNewStatusActivity extends AppCompatActivity implements OnClickLi
         spinnerLocation.setOnItemSelectedListener(this);
         spinnerPerson.setOnItemSelectedListener(this);
         submitButton.setOnClickListener(this);
+
+        eventBus.register(this);
+
+
+//        onEditButtonClicked(Status (eventBus.getStickyEvent(status)));
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEditButtonClicked(final Status status) {
+
+        Log.e(LOG_TAG, "onEditButtonClicked");
+        Log.e(LOG_TAG, status.toString());
+        this.status = status;
+        isStatusForEdit = true;
+        spinnerFeelings.setSelection(getSpinnerIndex(feelingsAdapter, status.getFeelingsID()), true);
+        spinnerActivity.setSelection(getSpinnerIndex(activityAdapter, status.getActivityID()), true);
+        spinnerLocation.setSelection(getSpinnerIndex(locationAdaper, status.getLocationID()), true);
+        spinnerPerson.setSelection(getSpinnerIndex(personAdapter, status.getPersonID()), true);
+        etReason.setText(status.getNotes());
+
+    }
+
+    public int getSpinnerIndex(RowSpinnerStyleAdapter adapter, int ID) {
+        for (int position = 0; position < adapter.getCount(); position++) {
+            if(adapter.getItem(position).getID() == ID) {
+                return position;
+            }
+        }
+
+        return 0;
+    }
+
+    @Override
+    public void onStop() {
+        eventBus.unregister(this);
+        super.onStop();
+    }
 
 
     @Override
@@ -82,8 +141,13 @@ public class AddNewStatusActivity extends AppCompatActivity implements OnClickLi
         switch (view.getId()) {
             case R.id.submit_button:
                 DBAdapter dbAdapter = DBAdapter.newInstance(this);
+
+                Log.e(LOG_TAG, "etReason text : " + etReason.getText().toString() );
+
                 status.setNotes(etReason.getText().toString());
-                dbAdapter.addNewStatus(status);
+
+                if (isStatusForEdit) dbAdapter.updateStatus(status);
+                else dbAdapter.addNewStatus(status);
                 break;
         }
     }
