@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorPrimaryLight">#B2DFDB</color>
+    <color name="actionBarTextColor">#FFFFFF</color>
+    <color name="colorAccent">#FF5252</color>
+    <color name="colorAccentDark">#D50000</color>
+    <color name="colorAccentLight">#FF8A80</color>
+    <color name="primaryText">#57000000</color>
+    <color name="secondaryText">#36000000</color>
+    <color name="disabledText">#26000000</color>
+    <color name="divider">#0C000000</color>
+</resources>
