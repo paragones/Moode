@@ -6,6 +6,10 @@ package com.paularagones.moode.Constants;
 public class Constants {
 
     public class Database {
+
+        public static final String DATABASE_NAME = "Mooder.db";
+        public static final int DATABASE_VERSION = 1;
+
         public static final String TABLE_NAME_ACTIVITY = "Activity";
         public static final String TABLE_NAME_FEELINGS = "Feelings";
         public static final String TABLE_NAME_LOCATION = "Location";

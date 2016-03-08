@@ -6,41 +6,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:text="Date"
-        android:id="@+id/tv_date"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-         />
+        android:orientation="horizontal">
 
-    <TextView android:text="Feelings"
-        android:id="@+id/tv_feelings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView android:text="Activity"
-        android:id="@+id/tv_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+            <TextView android:text="Date"
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
-    <TextView android:text="Person"
-        android:id="@+id/tv_person"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         />
+            <TextView android:text="Feelings"
+                android:id="@+id/tv_feelings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
-    <TextView android:text="Location"
-        android:id="@+id/tv_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         />
+            <TextView android:text="Activity"
+                android:id="@+id/tv_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
-    <TextView android:text="Reason"
-        android:id="@+id/tv_reason"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         />
+            <TextView android:text="Person"
+                android:id="@+id/tv_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView android:text="Location"
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView android:text="Reason"
+                android:id="@+id/tv_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"/>
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"/>
 
 
+    </LinearLayout>
 </LinearLayout>

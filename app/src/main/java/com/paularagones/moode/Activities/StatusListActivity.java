@@ -24,7 +24,7 @@ public class StatusListActivity extends AppCompatActivity {
 
 
         ///TODO DB shouldn't be called here create an async task for this
-        DBAdapter dbAdapter = new DBAdapter(this);
+        DBAdapter dbAdapter = DBAdapter.newInstance(this);
         List<Status> statusList = dbAdapter.getStatusList();
 
         RowStatusListAdapter statusListAdapter = new RowStatusListAdapter(this, statusList);

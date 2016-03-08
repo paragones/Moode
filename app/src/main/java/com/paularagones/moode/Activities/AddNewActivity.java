@@ -7,7 +7,7 @@ import com.paularagones.moode.Constants.Constants;
 /**
  * Created by Paul.Aragones on 3/1/2016.
  */
-public class AddNewActivity extends AddNewAbstract {
+public class AddNewActivity extends AddNewRecordActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,7 +10,6 @@ import com.paularagones.moode.Activities.AddNewLocationActivity;
 import com.paularagones.moode.Activities.AddNewPersonActivity;
 import com.paularagones.moode.Activities.AddNewStatusActivity;
 import com.paularagones.moode.Activities.DateActivity;
-import com.paularagones.moode.Activities.DateActivity2;
 import com.paularagones.moode.Activities.MoodActivity;
 import com.paularagones.moode.Activities.StatusListActivity;
 import com.paularagones.moode.Dialog.HelpDialog;
@@ -53,7 +52,7 @@ public class ActivityOptionsService {
                 activity.startActivity(mainIntent);
                 break;
             case R.id.date_activity :
-                mainIntent = new Intent(activity, DateActivity2.class);
+                mainIntent = new Intent(activity, DateActivity.class);
                 activity.startActivity(mainIntent);
                 break;
             case R.id.mood_chart_activity :

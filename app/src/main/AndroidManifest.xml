@@ -25,7 +25,7 @@
             android:label="@string/status_list_activity" >
         </activity>
         <activity
-            android:name=".Activities.DateActivity2"
+            android:name=".Activities.DateActivity"
             android:label="@string/title_activity_date" >
         </activity>
         <activity
