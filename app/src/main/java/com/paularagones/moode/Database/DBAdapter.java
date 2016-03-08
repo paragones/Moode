@@ -77,24 +77,24 @@ public class DBAdapter extends SQLiteAssetHelper {
         return statusList;
     }
 
-    public List<Result> getFeelingsResultByDate() {
-        database = getWritableDatabase();
+    public List<String> getDates(DbRequest dbRequest, int id) {
+        String selection = String.format(
+                "%s = %s AND date('now','start of month') <= %s",
+                dbRequest.getTableID(),
+                id,
+                Constants.Database.COLUMN_NAME_DATE_STAMP
+        );
 
-        List<Result> results = new ArrayList<>();
+        database = getReadableDatabase();
 
-        Cursor cursor = database.rawQuery("SELECT " +
-                "f.FeelingsDescription, COUNT (FeelingsDescription) as NumberOfTimes " +
-                "FROM [Status] s,[Feelings] f " +
-                "WHERE s.FeelingsID = f.FeelingsID AND date('now','start of month') <= DateStamp " +
-                "GROUP BY f.FeelingsDescription",null);
+        List<String> results = new ArrayList<>();
+
+        Cursor cursor = database.query(Constants.Database.TABLE_NAME_STATUS, new String[] {Constants.Database.COLUMN_NAME_DATE_STAMP}, selection, null, Constants.Database.COLUMN_NAME_DATE_STAMP, null, Constants.Database.COLUMN_NAME_DATE_STAMP);
 
         while (cursor.moveToNext()) {
-            Result result = new Result();
-            result.setDescription(cursor.getString(cursor.getColumnIndex("FeelingsDescription")));
-            result.setNumberOfTimes(cursor.getInt(cursor.getColumnIndex("NumberOfTimes")));
+            String result = cursor.getString(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_DATE_STAMP));
             results.add(result);
 
-//            Log.e(LOG_TAG, result.toString());
         }
 
         cursor.close();
@@ -102,6 +102,7 @@ public class DBAdapter extends SQLiteAssetHelper {
         close();
 
         return results;
+
     }
 
     public List<Result> getDateResult(DbRequest dbRequest) {
@@ -219,98 +220,6 @@ public class DBAdapter extends SQLiteAssetHelper {
         return results;
     }
 
-    public List<SpinnerResult> getFeelingsList() {
-
-        database = getWritableDatabase();
-
-        List<SpinnerResult> results = new ArrayList<>();
-
-        Cursor cursor = database.rawQuery("select FeelingsID, FeelingsDescription from Feelings ORDER BY FeelingsID", null);
-
-        while (cursor.moveToNext()) {
-            SpinnerResult result = new SpinnerResult();
-            result.setID(cursor.getInt(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_FEELINGS_ID)));
-            result.setDescription(cursor.getString(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_FEELINGS_DESCRIPTION)));
-            results.add(result);
-//            Log.e(LOG_TAG, result.toString());
-        }
-
-        cursor.close();
-
-        close();
-
-        return results;
-    }
-
-    public List<SpinnerResult> getPersonList() {
-
-        database = getWritableDatabase();
-
-        List<SpinnerResult> results = new ArrayList<>();
-
-        Cursor cursor = database.rawQuery("select PersonID, PersonName from Person ORDER BY PersonID",null);
-
-        while (cursor.moveToNext()) {
-            SpinnerResult result = new SpinnerResult();
-            result.setID(cursor.getInt(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_PERSON_ID)));
-            result.setDescription(cursor.getString(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_PERSON_NAME)));
-            results.add(result);
-//            Log.e(LOG_TAG, result.toString());
-        }
-
-        cursor.close();
-
-        close();
-
-        return results;
-    }
-
-    public List<SpinnerResult> getActivityList() {
-
-        database = getWritableDatabase();
-
-        List<SpinnerResult> results = new ArrayList<>();
-
-        Cursor cursor = database.rawQuery("select ActivityID, ActivityDescription from Activity ORDER BY ActivityID",null);
-
-        while (cursor.moveToNext()) {
-            SpinnerResult result = new SpinnerResult();
-            result.setID(cursor.getInt(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_ACTIVITY_ID)));
-            result.setDescription(cursor.getString(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_ACTIVITY_DESCRIPTION)));
-            results.add(result);
-//            Log.e(LOG_TAG, result.toString());
-        }
-
-        cursor.close();
-
-        close();
-
-        return results;
-    }
-
-    public List<SpinnerResult> getLocationList() {
-
-        database = getWritableDatabase();
-
-        List<SpinnerResult> results = new ArrayList<>();
-
-        Cursor cursor = database.rawQuery("select LocationID, LocationDescription from Location ORDER BY LocationID",null);
-
-        while (cursor.moveToNext()) {
-            SpinnerResult result = new SpinnerResult();
-            result.setID(cursor.getInt(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_LOCATION_ID)));
-            result.setDescription(cursor.getString(cursor.getColumnIndex(Constants.Database.COLUMN_NAME_LOCATION_DESCRIPTION)));
-            results.add(result);
-//            Log.e(LOG_TAG, result.toString());
-        }
-
-        cursor.close();
-
-        close();
-
-        return results;
-    }
-
     public void addNewRecord(String tableName, String columnName, String text) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName,text);
@@ -408,4 +317,6 @@ public class DBAdapter extends SQLiteAssetHelper {
 
         close();
     }
+
+
 }

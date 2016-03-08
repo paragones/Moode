@@ -1,5 +1,6 @@
 package com.paularagones.moode.Activities;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,8 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.paularagones.moode.Adapters.RowResultsWithBarAdapter;
 import com.paularagones.moode.Adapters.RowSpinnerStyleAdapter;
+import com.paularagones.moode.Constants.Constants;
 import com.paularagones.moode.Database.DBAdapter;
 import com.paularagones.moode.Models.DbRequest;
 import com.paularagones.moode.Models.DbRequestActivity;
@@ -24,6 +36,7 @@ import com.paularagones.moode.Models.SpinnerResult;
 import com.paularagones.moode.R;
 import com.paularagones.moode.Services.ActivityOptionsService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoodActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -33,6 +46,7 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
     private ListView personListView;
     private ListView feelingsListView;
     private ListView activityListView;
+    private HorizontalBarChart locationBarChartView;
 
     private ListView suggestedAdviceListView;
     private Spinner spinnerCategory;
@@ -68,6 +82,7 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
         feelingsListView = (ListView) findViewById(R.id.feelings_list_view);
         activityListView = (ListView) findViewById(R.id.activity_list_view);
         suggestedAdviceListView = (ListView) findViewById(R.id.suggested_advice_list_view);
+        locationBarChartView = (HorizontalBarChart) findViewById(R.id.location_bar_chart);
 
         ArrayAdapter categoryAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, categories);
 
@@ -135,6 +150,10 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
             case R.id.spinner_result :
 
+                List<String> dateList = dbAdapter.getDates(dbRequest, resultList.get(position).getID());
+                ArrayAdapter datesAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, dateList);
+                dateListView.setAdapter(datesAdapter);
+
                 if (!(dbRequest instanceof DbRequestFeelings)) {
                     List<Result> feelingsResults = dbAdapter.getResultList(dbRequest.getTableID(),resultList.get(position).getID(), new DbRequestFeelings());
                     RowResultsWithBarAdapter feelingsResultsAdapter = new RowResultsWithBarAdapter(this, feelingsResults);
@@ -149,8 +168,57 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (!(dbRequest instanceof DbRequestLocation)) {
                     List<Result> locationResults = dbAdapter.getResultList(dbRequest.getTableID(),resultList.get(position).getID(), new DbRequestLocation());
-                    RowResultsWithBarAdapter locationResultsAdapter = new RowResultsWithBarAdapter(this, locationResults);
-                    locationListView.setAdapter(locationResultsAdapter);
+
+                    ArrayList<IBarDataSet> barDataSets = new ArrayList<>();
+                    ArrayList<String> xVals = new ArrayList<String>();
+
+                    for (int i = 0; i < locationResults.size(); i++) {
+                        BarEntry entry1 = new BarEntry(locationResults.get(i).getNumberOfTimes(), i);
+
+                        ArrayList<BarEntry> entries = new ArrayList<>();
+                        entries.add(entry1);
+
+                        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+                        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                            colors.add(c);
+
+                        BarDataSet barDataSet = new BarDataSet(entries, "barDataSet = " +  locationResults.get(i).getDescription());
+                        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+                        barDataSet.setColor(colors.get(i));
+                        barDataSets.add(barDataSet);
+
+//                        xVals.add("xVals = " +  locationResults.get(i).getDescription());
+                        xVals.add("");
+                    }
+
+                    BarData barData = new BarData(xVals, barDataSets);
+                    locationBarChartView.setData(barData);
+                    locationBarChartView.setDrawGridBackground(false);
+                    locationBarChartView.setDrawBarShadow(false);
+//                    locationBarChartView.setDrawValueAboveBar(false);
+                    locationBarChartView.setDescription("");
+
+                    XAxis xl = locationBarChartView.getXAxis();
+                    xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xl.setDrawAxisLine(true);
+                    xl.setDrawGridLines(false);
+
+                    YAxis yl = locationBarChartView.getAxisLeft();
+                    yl.setDrawAxisLine(true);
+                    yl.setDrawGridLines(false);
+                    yl.setGridLineWidth(0.3f);
+                    yl.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+                    YAxis yr = locationBarChartView.getAxisRight();
+                    yr.setDrawAxisLine(true);
+                    yr.setDrawGridLines(false);
+                    yr.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+                    locationBarChartView.animateY(2500);
+
+//                    RowResultsWithBarAdapter locationResultsAdapter = new RowResultsWithBarAdapter(this, locationResults);
+//                    locationListView.setAdapter(locationResultsAdapter);
                 }
 
                 if (!(dbRequest instanceof DbRequestActivity)) {

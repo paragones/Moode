@@ -11,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -25,5 +30,6 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'net.danlew:android.joda:2.9.2'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
 
 }
