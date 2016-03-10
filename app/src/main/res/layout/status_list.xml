@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.StatusFragment">
 
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/status_recycler"
 

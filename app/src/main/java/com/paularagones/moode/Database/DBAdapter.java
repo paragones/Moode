@@ -37,7 +37,7 @@ public class DBAdapter extends SQLiteAssetHelper {
     public static DBAdapter newInstance(Context context) {
 
         if (instance == null) {
-            return new DBAdapter(context);
+            return instance = new DBAdapter(context);
         } else {
             return instance;
 
