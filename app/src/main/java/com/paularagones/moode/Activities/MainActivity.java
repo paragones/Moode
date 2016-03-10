@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        System.out.println("Yo ");
+        System.out.println("Yo Bob ");
 
         setContentView(R.layout.main);
 
