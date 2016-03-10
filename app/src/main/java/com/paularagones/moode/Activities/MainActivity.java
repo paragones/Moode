@@ -31,11 +31,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        System.out.println("Hello Anj");
+        System.out.println("Yo ");
 
         setContentView(R.layout.main);
-
-        System.out.println("Hello Bobby");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
