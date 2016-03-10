@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        System.out.println("Hello Anj");
+
         setContentView(R.layout.main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
