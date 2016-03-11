@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.paularagones.moode.R;
 import com.paularagones.moode.Fragments.StatusFragment;
 import com.paularagones.moode.Fragments.ChartFragment;
 import com.paularagones.moode.Fragments.StatsFragment;
+import com.paularagones.moode.Services.ActivityOptionsService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        System.out.println("Yo ");
-
         setContentView(R.layout.main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,5 +88,16 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        ActivityOptionsService activityOptionsService = new ActivityOptionsService();
+        activityOptionsService.openActivity(this ,id);
+        return super.onOptionsItemSelected(item);
     }
 }
