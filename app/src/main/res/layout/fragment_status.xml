@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textColor="@color/secondaryText"
-        android:textSize="14dp"
-        android:text="WEDNESDAY, MAR 8"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +16,7 @@
             android:id="@+id/status_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:tag="collapsed"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true">
 
@@ -63,7 +54,7 @@
                             android:layout_height="0dp"
                             android:gravity="center_vertical"
                             android:layout_weight="2"
-                            android:textColor="@color/colorAccent"
+                            android:textColor="@color/colorAccentDark"
                             android:fontFamily="sans-serif"
                             android:textSize="@dimen/mood_text_size"/>
 
@@ -71,18 +62,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:orientation="horizontal"
-                            android:layout_weight="1.5"
-                            android:weightSum="4">
+                            android:layout_weight="1.5">
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
+                                android:paddingRight="5dp"
                                 android:orientation="horizontal">
 
                                 <ImageView
                                     android:id="@+id/mood_location_img"
-                                    android:src="@drawable/angry"
+                                    android:src="@drawable/location"
+                                    android:alpha=".40"
+                                    android:paddingTop="3dp"
+                                    android:paddingBottom="3dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:adjustViewBounds="true"/>
@@ -92,6 +85,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center_vertical"
+                                    android:paddingStart="3dp"
                                     android:text="Makati"
                                     android:textColor="@color/primaryText"
                                     android:fontFamily="sans-serif"
@@ -100,14 +94,18 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_weight="2"
+                                android:gravity="start"
+                                android:paddingStart="7dp"
                                 android:orientation="horizontal">
 
                                 <ImageView
                                     android:id="@+id/mood_person_img"
-                                    android:src="@drawable/angry"
+                                    android:src="@drawable/person"
+                                    android:alpha=".40"
+                                    android:paddingTop="3dp"
+                                    android:paddingBottom="3dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:adjustViewBounds="true" />
@@ -117,6 +115,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center_vertical"
+                                    android:paddingStart="3dp"
                                     android:text="Juan dela Cruz"
                                     android:textColor="@color/primaryText"
                                     android:fontFamily="sans-serif"
@@ -125,14 +124,18 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
+                                android:gravity="start"
+                                android:paddingStart="7dp"
                                 android:orientation="horizontal">
 
                                 <ImageView
                                     android:id="@+id/mood_activity_img"
-                                    android:src="@drawable/angry"
+                                    android:src="@drawable/activity"
+                                    android:alpha=".40"
+                                    android:paddingTop="3dp"
+                                    android:paddingBottom="3dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:adjustViewBounds="true" />
@@ -142,6 +145,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center_vertical"
+                                    android:paddingStart="3dp"
                                     android:text="work"
                                     android:textColor="@color/primaryText"
                                     android:fontFamily="sans-serif"

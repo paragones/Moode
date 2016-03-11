@@ -25,6 +25,8 @@ import com.paularagones.moode.Services.ActivityOptionsService;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String PACKAGE_NAME;
+
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        PACKAGE_NAME = getPackageName();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
