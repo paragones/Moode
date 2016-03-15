@@ -1,6 +1,5 @@
 package com.paularagones.moode.Activities;
 
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,18 +12,15 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.paularagones.moode.Adapters.RowResultsWithBarAdapter;
 import com.paularagones.moode.Adapters.RowSpinnerStyleAdapter;
-import com.paularagones.moode.Constants.Constants;
 import com.paularagones.moode.Database.DBAdapter;
 import com.paularagones.moode.Models.DbRequest;
 import com.paularagones.moode.Models.DbRequestActivity;
@@ -79,7 +75,7 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
         dateListView = (ListView) findViewById(R.id.date_list_view);
         locationListView = (ListView) findViewById(R.id.location_list_view);
         personListView = (ListView) findViewById(R.id.person_list_view);
-        feelingsListView = (ListView) findViewById(R.id.feelings_list_view);
+        feelingsListView = (ListView) findViewById(R.id.pie_chart);
         activityListView = (ListView) findViewById(R.id.activity_list_view);
         suggestedAdviceListView = (ListView) findViewById(R.id.suggested_advice_list_view);
         locationBarChartView = (HorizontalBarChart) findViewById(R.id.location_bar_chart);
@@ -123,22 +119,22 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
                 switch (position) {
                     case 0:
                         dbRequest = new DbRequestFeelings();
-                        resultList = dbAdapter.getListResult(dbRequest);
+                        resultList = dbAdapter.getCategoryResult(dbRequest);
                         feelingsLayout.setVisibility(View.GONE);
                         break;
                     case 1:
                         dbRequest = new DbRequestPerson();
-                        resultList = dbAdapter.getListResult(dbRequest);
+                        resultList = dbAdapter.getCategoryResult(dbRequest);
                         personLayout.setVisibility(View.GONE);
                         break;
                     case 2:
                         dbRequest = new DbRequestLocation();
-                        resultList = dbAdapter.getListResult(dbRequest);
+                        resultList = dbAdapter.getCategoryResult(dbRequest);
                         locationLayout.setVisibility(View.GONE);
                         break;
                     case 3:
                         dbRequest = new DbRequestActivity();
-                        resultList = dbAdapter.getListResult(dbRequest);
+                        resultList = dbAdapter.getCategoryResult(dbRequest);
                         activityLayout.setVisibility(View.GONE);
                         break;
 
@@ -155,19 +151,19 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
                 dateListView.setAdapter(datesAdapter);
 
                 if (!(dbRequest instanceof DbRequestFeelings)) {
-                    List<Result> feelingsResults = dbAdapter.getResultList(dbRequest.getTableID(),resultList.get(position).getID(), new DbRequestFeelings());
+                    List<Result> feelingsResults = dbAdapter.getResultListByCategory(dbRequest.getTableID(), resultList.get(position).getID(), new DbRequestFeelings());
                     RowResultsWithBarAdapter feelingsResultsAdapter = new RowResultsWithBarAdapter(this, feelingsResults);
                     feelingsListView.setAdapter(feelingsResultsAdapter);
                 }
 
                 if (!(dbRequest instanceof DbRequestPerson)) {
-                    List<Result> personResults = dbAdapter.getResultList(dbRequest.getTableID(),resultList.get(position).getID(), new DbRequestPerson());
+                    List<Result> personResults = dbAdapter.getResultListByCategory(dbRequest.getTableID(), resultList.get(position).getID(), new DbRequestPerson());
                     RowResultsWithBarAdapter personResultsAdapter = new RowResultsWithBarAdapter(this, personResults);
                     personListView.setAdapter(personResultsAdapter);
                 }
 
                 if (!(dbRequest instanceof DbRequestLocation)) {
-                    List<Result> locationResults = dbAdapter.getResultList(dbRequest.getTableID(),resultList.get(position).getID(), new DbRequestLocation());
+                    List<Result> locationResults = dbAdapter.getResultListByCategory(dbRequest.getTableID(), resultList.get(position).getID(), new DbRequestLocation());
 
                     ArrayList<IBarDataSet> barDataSets = new ArrayList<>();
                     ArrayList<String> xVals = new ArrayList<String>();
@@ -222,7 +218,7 @@ public class MoodActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
 
                 if (!(dbRequest instanceof DbRequestActivity)) {
-                    List<Result> activityResults = dbAdapter.getResultList(dbRequest.getTableID(),resultList.get(position).getID(), new DbRequestActivity());
+                    List<Result> activityResults = dbAdapter.getResultListByCategory(dbRequest.getTableID(), resultList.get(position).getID(), new DbRequestActivity());
                     RowResultsWithBarAdapter activityResultsAdapter = new RowResultsWithBarAdapter(this, activityResults);
                     activityListView.setAdapter(activityResultsAdapter);
                 }

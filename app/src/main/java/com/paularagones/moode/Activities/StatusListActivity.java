@@ -36,7 +36,7 @@ public class StatusListActivity extends AppCompatActivity {
 
         ///TODO DB shouldn't be called here create an async task for this
         final DBAdapter dbAdapter = DBAdapter.newInstance(this);
-        final List<Status> statusList = dbAdapter.getStatusList();
+//        final List<Status> statusList = dbAdapter.getStatusList();
 
         Observable<List<Status>> dbStatusListObservable = Observable.fromCallable(new Callable<List<Status>>() {
             @Override

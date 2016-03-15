@@ -28,6 +28,7 @@ import java.util.List;
 public class StatusRecyclerAdapter extends RecyclerView.Adapter<StatusRecyclerAdapter.StatusViewHolder>
         implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
 
+    private static final String LOG_TAG = StatusRecyclerAdapter.class.getSimpleName();
     List<Status> statuses;
     Resources res;
     ItemClickListener listener;

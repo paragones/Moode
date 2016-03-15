@@ -79,7 +79,7 @@
             />
 
         <ListView
-            android:id="@+id/feelings_list_view"
+            android:id="@+id/pie_chart"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             />

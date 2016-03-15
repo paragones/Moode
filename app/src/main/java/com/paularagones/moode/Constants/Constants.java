@@ -1,5 +1,11 @@
 package com.paularagones.moode.Constants;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Created by Paul.Aragones on 3/1/2016.
  */
@@ -37,9 +43,40 @@ public class Constants {
 
     }
 
+
+
     public class Date {
         public static final String DATE_FORMAT = "YYYY-MM-DD HH:MM:SS";
 
+    }
+
+    public static class Colors {
+
+        public static ArrayList<Integer> GET_COLORS() {
+            ArrayList<Integer> colors = new ArrayList<Integer>();
+
+            for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                colors.add(c);
+
+            for (int c : ColorTemplate.JOYFUL_COLORS)
+                colors.add(c);
+
+            for (int c : ColorTemplate.COLORFUL_COLORS)
+                colors.add(c);
+
+            for (int c : ColorTemplate.LIBERTY_COLORS)
+                colors.add(c);
+
+            for (int c : ColorTemplate.PASTEL_COLORS)
+                colors.add(c);
+
+            colors.add(ColorTemplate.getHoloBlue());
+
+            Collections.shuffle(colors);
+
+            return colors;
+
+        }
     }
 
 }
