@@ -9,12 +9,28 @@
 
     <dimen name="date_text_size">12sp</dimen>
 
-    <dimen name="mood_image">70dp</dimen>
+    <!-- collapsed -->
+    <dimen name="mood_image">65dp</dimen>
 
     <dimen name="mood_text_size">20sp</dimen>
 
-    <dimen name="info_image">18dp</dimen>
+    <dimen name="info_image">16dp</dimen>
     <dimen name="info_text_size">16sp</dimen>
 
     <dimen name="note_text_size">14sp</dimen>
+
+    <dimen name="edit_delete_image">45dp</dimen>
+
+    <!-- expanded -->
+    <dimen name="mood_image_exp">80dp</dimen>
+
+    <dimen name="mood_text_size_exp">22sp</dimen>
+
+    <dimen name="info_image_exp">18dp</dimen>
+    <dimen name="info_text_size_exp">18sp</dimen>
+
+    <dimen name="note_text_size_exp">16sp</dimen>
+
+    <dimen name="edit_delete_text_size_exp">16sp</dimen>
+
 </resources>

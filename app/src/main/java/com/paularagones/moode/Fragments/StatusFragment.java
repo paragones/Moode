@@ -3,6 +3,7 @@ package com.paularagones.moode.Fragments;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paularagones.moode.Adapters.StatusRecyclerAdapter;
@@ -27,12 +30,10 @@ import java.util.List;
  */
 public class StatusFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
-    private StatusRecyclerAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    public static StatusRecyclerAdapter mAdapter;
 
-    private int maxHeight = 0;
-    private int minHeight = 0;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private final String TAG = "Moode-StatusFragment";
 
@@ -55,58 +56,10 @@ public class StatusFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new StatusRecyclerAdapter(statuses, getResources(), new ItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Log.i(TAG, "onClick position = " + position);
-                toggleStatusCardView(v);
-            }
-            @Override
-            public boolean onItemLongClick(View v, int position) {
-                Log.i(TAG, "onLongClick position = " + position);
-                return true;
-            }
-        });
+        mAdapter = new StatusRecyclerAdapter(getContext(), statuses, getResources());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(mAdapter));
 
         return mRecyclerView;
-    }
-
-    public void toggleStatusCardView(final View v) {
-        StatusRecyclerAdapter.StatusViewHolder statusViewHolder = new StatusRecyclerAdapter.StatusViewHolder(v);
-
-        maxHeight = (int) (mRecyclerView.getHeight() * 0.5);
-
-        if (statusViewHolder.crdStatus.getTag().equals("collapsed")) {
-            // expand cardview
-            statusViewHolder.crdStatus.setTag("expanded");
-            minHeight = v.getHeight();
-            ValueAnimator anim = ValueAnimator.ofInt(v.getHeight(), maxHeight);
-            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
-                    layoutParams.height = val;
-                    v.setLayoutParams(layoutParams);
-                }
-            });
-            anim.start();
-        } else if (statusViewHolder.crdStatus.getTag().equals("expanded")) {
-            // collapse cardview
-            statusViewHolder.crdStatus.setTag("collapsed");
-            ValueAnimator anim = ValueAnimator.ofInt(maxHeight, minHeight);
-            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
-                    layoutParams.height = val;
-                    v.setLayoutParams(layoutParams);
-                }
-            });
-            anim.start();
-        }
     }
 }

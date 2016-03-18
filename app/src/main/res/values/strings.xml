@@ -23,4 +23,14 @@
         <item></item>
     </string-array>
 
+    <!-- Status List font family -->
+    <string name="mood_font_family">sans-serif-medium</string>
+    <string name="info_font_family">sans-serif</string>
+    <string name="notes_font_family">sans-serif</string>
+
+    <!-- Edit/Delete string -->
+    <string name="edit_delete">sans-serif-medium</string>
+    <string name="edit">EDIT</string>
+    <string name="delete">DELETE</string>
+
 </resources>
