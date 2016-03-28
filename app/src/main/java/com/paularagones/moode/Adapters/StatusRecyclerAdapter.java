@@ -40,13 +40,8 @@ public class StatusRecyclerAdapter extends RecyclerView.Adapter<StatusRecyclerAd
     Context mContext;
     List<Status> mStatuses;
     Resources mRes;
-
     Animator anim;
-
     DBAdapter mDBAdapter;
-
-    int minHeight = 0;
-    int maxHeight = 0;
 
     final static String TAG = "StatusRecyclerAdapter";
 
@@ -97,7 +92,6 @@ public class StatusRecyclerAdapter extends RecyclerView.Adapter<StatusRecyclerAd
 
     @Override
     public StatusViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
-        Log.i(TAG, "onCreateViewHolder");
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_status, viewGroup, false);
         final StatusViewHolder statusViewHolder = new StatusViewHolder(v);
 
@@ -108,7 +102,6 @@ public class StatusRecyclerAdapter extends RecyclerView.Adapter<StatusRecyclerAd
 
     @Override
     public void onBindViewHolder(final StatusViewHolder statusViewHolder, final int position) {
-        Log.i(TAG, "onBindViewHolder");
         int id = mRes.getIdentifier("drawable/" + mStatuses.get(position).getFeelings(), null, MainActivity.PACKAGE_NAME);
 
         statusViewHolder.imgMood.setImageResource(id);
@@ -151,6 +144,8 @@ public class StatusRecyclerAdapter extends RecyclerView.Adapter<StatusRecyclerAd
                 anim.toggleStatusCardView(statusViewHolder, mRes, statusViewHolder.crdStatus.getTag().toString());
             }
         });
+
+
     }
 
     @Override
