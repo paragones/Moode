@@ -21,7 +21,12 @@ import com.paularagones.moode.Database.DBAdapter;
 import com.paularagones.moode.Listeners.ItemClickListener;
 import com.paularagones.moode.Models.Status;
 import com.paularagones.moode.R;
+import com.paularagones.moode.Services.StatusService;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -32,34 +37,80 @@ public class StatusFragment extends Fragment {
 
     public static StatusRecyclerAdapter mAdapter;
 
+    private View view;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private final String TAG = "Moode-StatusFragment";
 
+    private EventBus eventBus;
+
+    public StatusFragment() {
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
+//        Log.e(TAG, "StatusFragment onCreate");
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d(TAG, "StatusFragment onCreateView");
 
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.status_list, null);
-        mRecyclerView = (RecyclerView)layout.findViewById(R.id.status_recycler);
+//        Log.e(TAG, "StatusFragment onCreateView");
 
-        ((ViewGroup)mRecyclerView.getParent()).removeView(mRecyclerView);
-
-        ///TODO DB shouldn't be called here create an async task for this
-        DBAdapter dbAdapter = DBAdapter.newInstance(getContext());
-        List<Status> statuses = dbAdapter.getStatusList();
+        view = inflater.inflate(R.layout.status_list, null);
+        LinearLayout linearLayout = (LinearLayout) view;
+        mRecyclerView = (RecyclerView) linearLayout.findViewById(R.id.status_recycler);
+        ((ViewGroup) mRecyclerView.getParent()).removeView(mRecyclerView);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new StatusRecyclerAdapter(getContext(), statuses, getResources());
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(mAdapter));
-
         return mRecyclerView;
     }
+
+    @Override
+    public void onStart() {
+//        Log.e(TAG, "onStart");
+        super.onStart();
+
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
+
+        StatusService statusService = StatusService.newInstance(getContext());
+        statusService.getStatusList(); //Async Task to call onReturnAdapter once finished
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onReturnList(List<Status> statuses) {
+//        Log.e(LOG_TAG, "onReturnList");
+
+        if (statuses.get(1) instanceof Status) {
+
+            mAdapter = new StatusRecyclerAdapter(statuses, getResources());
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(mAdapter));
+            eventBus.removeStickyEvent(statuses);
+
+        }
+
+
+    }
+
+
+    @Override
+    public void onStop() {
+//        Log.e(LOG_TAG, "onStop");
+        eventBus.unregister(this);
+        super.onStop();
+    }
+
 }

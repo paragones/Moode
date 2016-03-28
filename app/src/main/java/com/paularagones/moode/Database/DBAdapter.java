@@ -120,7 +120,7 @@ public class DBAdapter extends SQLiteAssetHelper {
         return prepareTablesAndColumnNames(selection, dbRequest);
     }
 
-    public List<Result> getResultList(String resultTableID, int ID, DbRequest dbRequest) {
+    public List<Result> getResultListByCategory(String resultTableID, int ID, DbRequest dbRequest) {
 
         String selection = String.format(
                 "%s.%s = %s.%s AND %s.%s = %s",
@@ -188,13 +188,14 @@ public class DBAdapter extends SQLiteAssetHelper {
 
         cursor.close();
 
-        close();
+//        close();
 
+//        Log.e(LOG_TAG, "query Results finished");
         return results;
     }
 
 
-    public List<SpinnerResult> getListResult(DbRequest dbRequest) {
+    public List<SpinnerResult> getCategoryResult(DbRequest dbRequest) {
         database = getWritableDatabase();
 
         List<SpinnerResult> results = new ArrayList<>();
@@ -214,9 +215,6 @@ public class DBAdapter extends SQLiteAssetHelper {
         }
 
         cursor.close();
-
-        close();
-
         return results;
     }
 

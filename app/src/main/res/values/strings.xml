@@ -10,9 +10,17 @@
     <string name="add_new_status_activity">Add New Status</string>
 
     <!-- Title Strings-->
-    <string name="hello_world">Hello world!</string>
+    <string name="title_app">Mooder</string>
+    <string name="title_tab_status">Status</string>
+    <string name="title_tab_chart">Chart</string>
+    <string name="title_tab_stats">Stats</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_mood">MoodActivity</string>
+
+    <string name="title_feelings">Feelings</string>
+    <string name="title_location">Location</string>
+    <string name="title_activity">Activity</string>
+    <string name="title_person">Person</string>
 
     <!-- Status Message-->
     <string name="status_list_empty">You have no status message yet!</string>

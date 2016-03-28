@@ -70,10 +70,10 @@ public class AddNewStatusActivity extends AppCompatActivity implements OnClickLi
 //        personList =  dbAdapter.getPersonList();
 //        activityList =  dbAdapter.getActivityList();
 //        locationList =  dbAdapter.getLocationList();
-        feelingsList =  dbAdapter.getListResult(new DbRequestFeelings());
-        personList =  dbAdapter.getListResult(new DbRequestPerson());
-        activityList =  dbAdapter.getListResult(new DbRequestActivity());
-        locationList =  dbAdapter.getListResult(new DbRequestLocation());
+        feelingsList =  dbAdapter.getCategoryResult(new DbRequestFeelings());
+        personList =  dbAdapter.getCategoryResult(new DbRequestPerson());
+        activityList =  dbAdapter.getCategoryResult(new DbRequestActivity());
+        locationList =  dbAdapter.getCategoryResult(new DbRequestLocation());
 
         feelingsAdapter = new RowSpinnerStyleAdapter(this, feelingsList);
         personAdapter = new RowSpinnerStyleAdapter(this, personList);
